@@ -1,4 +1,4 @@
-package com.example.smart_reprocessing_batch;
+package com.pro.batch;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

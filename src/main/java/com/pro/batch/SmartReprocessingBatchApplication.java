@@ -1,4 +1,4 @@
-package com.example.smart_reprocessing_batch;
+package com.pro.batch;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
