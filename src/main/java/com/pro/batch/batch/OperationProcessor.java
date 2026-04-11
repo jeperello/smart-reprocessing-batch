@@ -2,7 +2,7 @@ package com.pro.batch.batch;
 
 import com.pro.batch.model.Operation;
 import com.pro.batch.model.OperationStatus;
-import org.springframework.batch.infrastructure.item.ItemProcessor;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 import java.util.Random;
 
