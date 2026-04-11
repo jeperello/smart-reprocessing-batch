@@ -37,7 +37,7 @@ public class OperationProcessor implements ItemProcessor<Operation, Operation> {
     }
 
     private void handleFailure(Operation item, String error) {
-        item.setRetryCount(item.getRetryCount() + 1);
+            item.setRetryCount(item.getRetryCount() + 1);
         item.setLastError(error);
 
         // Lógica de reintentos: máximo 3
