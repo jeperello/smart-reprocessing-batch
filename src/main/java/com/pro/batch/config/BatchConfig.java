@@ -1,5 +1,6 @@
 package com.pro.batch.config;
 
+import com.pro.batch.batch.JobCompletionNotificationListener;
 import com.pro.batch.batch.OperationProcessor;
 import com.pro.batch.batch.OperationWriter;
 import com.pro.batch.model.Operation;
@@ -18,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -28,11 +31,13 @@ public class BatchConfig {
 
     @Bean
     public RepositoryItemReader<Operation> reader() {
+        List<OperationStatus> statusList = List.of(OperationStatus.PENDING, OperationStatus.RETRY);
+
         return new RepositoryItemReaderBuilder<Operation>()
                 .name("operationReader")
                 .repository(repository)
-                .methodName("findByStatus")
-                .arguments(OperationStatus.PENDING)
+                .methodName("findByStatusIn")
+                .arguments(Collections.singletonList(statusList))
                 .pageSize(10)
                 .sorts(Map.of("id", Sort.Direction.ASC))
                 .build();
@@ -52,8 +57,11 @@ public class BatchConfig {
     }
 
     @Bean
-    public Job reprocessingJob(JobRepository jobRepository, Step mainStep) {
+    public Job reprocessingJob(JobRepository jobRepository,
+                               Step mainStep,
+                               JobCompletionNotificationListener listener) {
         return new JobBuilder("reprocessingJob", jobRepository)
+                .listener(listener) // <--- Agrego el listener
                 .start(mainStep)
                 .build();
     }

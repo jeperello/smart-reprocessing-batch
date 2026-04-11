@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 
@@ -16,4 +18,8 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     // Para el reintento inteligente: buscamos FAILED con pocos reintentos
     Page<Operation> findByStatusAndRetryCountLessThan(OperationStatus status, int maxRetries, Pageable pageable);
+
+    long countByStatus(OperationStatus status);
+
+    Page<Operation> findByStatusIn(List<OperationStatus> statuses, Pageable pageable);
 }
