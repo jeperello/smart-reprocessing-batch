@@ -61,4 +61,19 @@ class OperationProcessorTest {
             assertThat(result.getStatus()).isEqualTo(OperationStatus.FAILED);
         }
     }
+
+    @Test
+    @DisplayName("Idempotencia: No debe procesar registros que ya están en SUCCESS")
+    void shouldReturnNullForSuccessItem() {
+        // GIVEN: Una operación que ya fue terminada previamente
+        Operation op = Operation.builder()
+                .status(OperationStatus.SUCCESS)
+                .build();
+
+        // WHEN: Intentamos procesarla de nuevo
+        Operation result = processor.process(op);
+
+        // THEN: El resultado debe ser null
+        assertThat(result).isNull();
+    }
 }
